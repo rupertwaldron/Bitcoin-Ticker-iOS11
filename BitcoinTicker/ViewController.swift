@@ -9,8 +9,7 @@
 import UIKit
 
 class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate {
-    
-    let coinBaseURL = "https://api.coindesk.com/v1/bpi/currentprice.json" // for GBP USD EUR
+
     let baseURL = "https://apiv2.bitcoinaverage.com/indices/global/ticker/BTC"
     let currencyArray = ["AUD", "BRL","CAD","CNY","EUR","GBP","HKD","IDR","ILS","INR","JPY","MXN","NOK","NZD","PLN","RON","RUB","SEK","SGD","USD","ZAR"]
     var finalURL = ""
@@ -95,7 +94,8 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        print(currencyArray[row])
+        finalURL = baseURL + currencyArray[row]
+        print(finalURL)
     }
 }
 
