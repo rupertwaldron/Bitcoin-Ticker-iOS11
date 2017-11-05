@@ -24,11 +24,15 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
     @IBOutlet weak var gainLabel: UILabel!
     @IBOutlet weak var costOfBitcoins: UITextField!
     @IBOutlet weak var numberOfBitcoins: UITextField!
+    @IBOutlet weak var totalPortfolioValue: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         currencyPicker.delegate = self
         currencyPicker.dataSource = self
+        // Removes keyboard on tap
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(ViewController.dismissKeyboard))
+        view.addGestureRecognizer(tap)
     }
 
     
@@ -66,7 +70,10 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
                     if let tempNoOfBitcoins = Double(numberOfBitcoins.text!) {
                         if tempNoOfBitcoins > 0 {
                             bitcoinPortfolio.totalBitcoins = tempNoOfBitcoins
-                            gainLabel.text = "\(bitcoinPortfolio.calculateGain())%"
+                            let gainString = String(format: "%.2f", bitcoinPortfolio.calculateGain())
+                            gainLabel.text = gainString + "%"
+                            let totalValueString = String(format: "%.2f", bitcoinPortfolio.calculateTotalPortfolioValue())
+                            totalPortfolioValue.text = "\(currencySymbols[selectedCurrency])" + totalValueString
                         }
                         else {
                             gainLabel.text = "Gain"
@@ -94,14 +101,24 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
         return currencyArray.count
     }
     
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return currencyArray[row]
-    }
+    //func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+     //   return currencyArray[row]
+    //}
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         finalURL = baseURL + currencyArray[row]
         selectedCurrency = row
         getBitcoinData(url: finalURL)
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
+        let attributedString = NSAttributedString(string: currencyArray[row], attributes: [NSAttributedStringKey.foregroundColor : UIColor.yellow])
+        return attributedString
+    }
+    
+    // used for removing keyboard
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
     }
 }
 
