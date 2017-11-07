@@ -1,11 +1,3 @@
-//
-//  PortfolioData.swift
-//  BitcoinTicker
-//
-//  Created by Rupert Waldron on 04/11/2017.
-//  Copyright © 2017 London App Brewery. All rights reserved.
-//
-
 import Foundation
 
 class Porfolio {
